@@ -1,10 +1,11 @@
 import puppeteer from "puppeteer";
 import { screenshotElement, storePage } from "./utils";
-
+import { isDev } from "./utils";
 export const extractChapter = async (mangaId: string, chapterId: string) => {
   console.log(`Extracting chapter ${chapterId} from manga ${mangaId}`);
   const chapterUrl = `https://chapmanganato.to/manga-${mangaId}/chapter-${chapterId}`;
   const browser = await puppeteer.launch({
+    executablePath: isDev ? undefined : "./driver/chrome",
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
   const page = await browser.newPage();
