@@ -4,7 +4,7 @@ WORKDIR "/app"
 
 COPY package*.json ./
 RUN npm install
-
+RUN npx @puppeteer/browsers install chrome@stable --path /app/src/driver/chrome
 COPY . .
 RUN npx tsc
 EXPOSE 6967
