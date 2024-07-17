@@ -1,7 +1,7 @@
 import { ElementHandle, Page } from "puppeteer";
 import axios from "axios";
 import { config } from "./config";
-
+import { getBrowser } from "./utils/browserGlobal";
 export const isDev = process.env.RUNTIME_ENVIRONMENT !== "docker";
 
 export const screenshotElement = async (
@@ -38,4 +38,9 @@ export const storePage = async (
   });
 };
 
-export default { screenshotElement };
+export const openPage = async (url: string) => {
+  const browser = await getBrowser();
+  const page = await browser.newPage();
+  await page.goto(url);
+  return page;
+};
