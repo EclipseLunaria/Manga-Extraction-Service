@@ -1,5 +1,7 @@
+import { openPage, screenshotElement } from "./utils";
+import { uploadFileToS3 } from "./utils/s3Tools";
 import puppeteer from "puppeteer";
-import { screenshotElement, storePage } from "./utils";
+import { storePage } from "./utils";
 import { isDev } from "./utils";
 export const extractChapter = async (mangaId: string, chapterId: string) => {
   console.log(`Extracting chapter ${chapterId} from manga ${mangaId}`);
@@ -25,9 +27,6 @@ export const extractChapter = async (mangaId: string, chapterId: string) => {
       pageNumber++;
     }
   }
-
-  await browser.close();
-  return pageUrls;
 };
 
 export default { extractChapter };

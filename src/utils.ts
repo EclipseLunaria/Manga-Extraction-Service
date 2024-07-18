@@ -1,7 +1,6 @@
 import { ElementHandle, Page } from "puppeteer";
-import axios from "axios";
-import { config } from "./config";
-
+import { getBrowser } from "./utils/browserGlobal";
+import { uploadFileToS3 } from "./utils/s3Tools";
 export const isDev = process.env.RUNTIME_ENVIRONMENT !== "docker";
 
 export const screenshotElement = async (
@@ -29,13 +28,16 @@ export const storePage = async (
   pageNumber: number,
   screenshot: Buffer
 ) => {
-  const url = `${config.STORAGE_HOST}/storage/upload/manga-${mangaId}/chapter-${chapterId}/page-${pageNumber}.jpg`;
-  console.log(`Storing page ${pageNumber} to ${url}`);
-  await axios.post(url, screenshot, {
-    headers: {
-      "Content-Type": "image/jpeg",
-    },
-  });
+    const url = `manga-${mangaId}/chapter-${chapterId}/page-${pageNumber}.jpg`;
+    console.log(`Storing page ${pageNumber} to ${url}`);
+
+  await uploadFileToS3(url, screenshot);
+
 };
 
-export default { screenshotElement };
+export const openPage = async (url: string) => {
+  const browser = await getBrowser();
+  const page = await browser.newPage();
+  await page.goto(url);
+  return page;
+};
