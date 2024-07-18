@@ -5,7 +5,7 @@ export const extractChapter = async (mangaId: string, chapterId: string) => {
   console.log(`Extracting chapter ${chapterId} from manga ${mangaId}`);
   const chapterUrl = `https://chapmanganato.to/manga-${mangaId}/chapter-${chapterId}`;
   const browser = await puppeteer.launch({
-    executablePath: isDev ? undefined : "./driver/chrome",
+    executablePath: isDev ? undefined : "/usr/lib/chromium/",
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
   const page = await browser.newPage();
