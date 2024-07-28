@@ -1,7 +1,7 @@
 import { ElementHandle, Page } from "puppeteer";
 import { getBrowser } from "./utils/browserGlobal";
 import { uploadFileToS3 } from "./utils/s3Tools";
-export const isDev = process.env.RUNTIME_ENVIRONMENT !== "docker";
+export const isDev = process.env.RUNTIME_ENVIRONMENT !== "production";
 
 export const screenshotElement = async (
   element: ElementHandle,
@@ -28,11 +28,10 @@ export const storePage = async (
   pageNumber: number,
   screenshot: Buffer
 ) => {
-    const url = `manga-${mangaId}/chapter-${chapterId}/page-${pageNumber}.jpg`;
-    console.log(`Storing page ${pageNumber} to ${url}`);
+  const url = `manga-${mangaId}/chapter-${chapterId}/page-${pageNumber}.jpg`;
+  console.log(`Storing page ${pageNumber} to ${url}`);
 
   await uploadFileToS3(url, screenshot);
-
 };
 
 export const openPage = async (url: string) => {
